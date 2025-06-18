@@ -81,13 +81,11 @@ Proje Yapısı
 Geri Bildirimlere Yanıtlar
 Verdiğiniz geri bildirimleri dikkate alarak projemizde aşağıdaki noktaları geliştirdik:
 
-README Dosyası: Projenin kurulumu, çalıştırılması ve genel yapısı hakkında bilgi veren bu README.md dosyası oluşturuldu.
+README Dosyası: Projenin kurulumu, çalıştırılması ve genel yapısı hakkında bilgi veren bu README.md.
 
 Veritabanı & JSON Çıktıları:
 
-Misafir kayıtlarının JSON çıktısı (/export_json rotası) zaten mevcuttu ve dinamik veriyi başarıyla dışa aktarıyordu.
-
-db2json.py betiği, kullanıcı ve misafir verilerini sqlite3 kullanarak JSON'a aktaracak şekilde güncellendi. Kullanıcı şifreleri hassasiyet nedeniyle JSON çıktısına dahil edilmemiştir. python db2json.py komutuyla ayrı olarak çalıştırılabilir.
+db2json.py betiği, kullanıcı  verilerini sqlite3 kullanarak JSON'a aktaracak şekilde güncellendi. Kullanıcı şifreleri hassasiyet nedeniyle JSON çıktısına dahil edilmemiştir. python db2json.py komutuyla ayrı olarak çalıştırılabilir.
 
 Render Linki / Giriş Sorunu:
 
