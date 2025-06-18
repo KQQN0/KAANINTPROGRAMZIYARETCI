@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziyaretçi Yoğunluk Rapor</title>
+    <link rel="stylesheet" type="text/css" href="/static/yogunluk.css">
+    <!-- Chart.js kütüphanesini ekle -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Grafik konteynerleri için stil */
+        .chart-container {
+            width: 80%; /* Genişliği ayarla */
+            max-width: 800px; /* Maksimum genişliği ayarla */
+            margin: 30px auto; /* Ortala ve üstten/alttan boşluk bırak */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="geri-button-container">
+        <button class="geri-button" onclick="goBack()">Geri</button>
+    </div>
+
+    <script>
+        function goBack() {
+          // Rota adı düzeltildi: 'ana_kayıtlar' yerine 'ana_kayitlar'
+          window.location.href = '{{ url_for("ana_kayitlar") }}';
+        }
+    </script>
+
+    <div class="yogunluk-icerik">
+        <h2 class="yogunluk-baslik">Ziyaretçi Yoğunluk Analizi</h2>
+        
+        <!-- Günlük Yoğunluk Grafiği -->
+        <div class="chart-container">
+            <h3>Günlük Yoğunluk</h3>
+            <canvas id="dailyDensityChart"></canvas>
+        </div>
+
+        <!-- Haftalık Yoğunluk Grafiği -->
+        <div class="chart-container">
+            <h3>Haftalık Yoğunluk</h3>
+            <canvas id="weeklyDensityChart"></canvas>
+        </div>
+
+        <!-- Aylık Yoğunluk Grafiği -->
+        <div class="chart-container">
+            <h3>Aylık Yoğunluk</h3>
+            <canvas id="monthlyDensityChart"></canvas>
+        </div>
+
+        <script>
+            // Flask'tan gelen verileri JavaScript değişkenlerine aktar
+            const gunlukYogunlukData = {{ gunluk_yogunluk | tojson }};
+            const haftalikYogunlukData = {{ haftalik_yogunluk | tojson }};
+            const aylikYogunlukData = {{ aylik_yogunluk | tojson }};
+
+            // Günlük Yoğunluk Grafiği
+            if (gunlukYogunlukData.length > 0) {
+                const dailyLabels = gunlukYogunlukData.map(item => item.tarih);
+                const dailyCounts = gunlukYogunlukData.map(item => item.sayi);
+
+                const ctxDaily = document.getElementById('dailyDensityChart').getContext('2d');
+                new Chart(ctxDaily, {
+                    type: 'bar',
+                    data: {
+                        labels: dailyLabels,
+                        datasets: [{
+                            label: 'Ziyaretçi Sayısı',
+                            data: dailyCounts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Günlük Ziyaretçi Yoğunluğu',
+                                font: {
+                                    size: 18
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Tarih'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Sayi'
+                                },
+                                ticks: {
+                                    precision: 0 
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('dailyDensityChart').parentElement.innerHTML = '<p style="text-align: center;">Günlük yoğunluk verisi bulunamadı.</p>';
+            }
+
+            // Haftalık Yoğunluk Grafiği
+            if (haftalikYogunlukData.length > 0) {
+                const weeklyLabels = haftalikYogunlukData.map(item => item.hafta);
+                const weeklyCounts = haftalikYogunlukData.map(item => item.sayi);
+
+                const ctxWeekly = document.getElementById('weeklyDensityChart').getContext('2d');
+                new Chart(ctxWeekly, {
+                    type: 'bar',
+                    data: {
+                        labels: weeklyLabels,
+                        datasets: [{
+                            label: 'Ziyaretçi Sayısı',
+                            data: weeklyCounts,
+                            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Haftalık Ziyaretçi Yoğunluğu',
+                                font: {
+                                    size: 18
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Hafta (Yıl-Hafta Numarası)'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Sayi'
+                                },
+                                ticks: {
+                                    precision: 0 
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('weeklyDensityChart').parentElement.innerHTML = '<p style="text-align: center;">Haftalık yoğunluk verisi bulunamadı.</p>';
+            }
+
+            // Aylık Yoğunluk Grafiği
+            if (aylikYogunlukData.length > 0) {
+                const monthlyLabels = aylikYogunlukData.map(item => item.ay);
+                const monthlyCounts = aylikYogunlukData.map(item => item.sayi);
+
+                const ctxMonthly = document.getElementById('monthlyDensityChart').getContext('2d');
+                new Chart(ctxMonthly, {
+                    type: 'bar',
+                    data: {
+                        labels: monthlyLabels,
+                        datasets: [{
+                            label: 'Ziyaretçi Sayısı',
+                            data: monthlyCounts,
+                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Aylık Ziyaretçi Yoğunluğu',
+                                font: {
+                                    size: 18
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Ay (Yıl-Ay)'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Sayi'
+                                },
+                                ticks: {
+                                    precision: 0 
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('monthlyDensityChart').parentElement.innerHTML = '<p style="text-align: center;">Aylık yoğunluk verisi bulunamadı.</p>';
+            }
+        </script>
+    </div>
+</body>
+</html>

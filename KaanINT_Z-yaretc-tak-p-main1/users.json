@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "username": "eko",
+        "password": "pbkdf2:sha256:260000$WKMftcIQxZltnT7w$2dc06a7f1b28f9dc6528a5ac65d5856fb6dc62fe2a979f782aa2d75160aaa88e"
+    },
+    {
+        "id": 2,
+        "username": "kaan",
+        "password": "pbkdf2:sha256:260000$SefyNWpHbA1avVW2$ea04fffbfd52ded7184ae2bbe531bbe363e488e6a61228e31fd6c73bb93d9c1e"
+    },
+    {
+        "id": 3,
+        "username": "araba",
+        "password": "pbkdf2:sha256:260000$DoATTkTVX52lL05U$9403e3f59bffb53aa50f180ccf8086ab3bb97e653201b9b8de79efe870f7ce03"
+    },
+    {
+        "id": 4,
+        "username": "ibrahim",
+        "password": "pbkdf2:sha256:260000$uIP1TYlFOYe55wkV$3a3ab99565525d5cd65b3e3bce4efbe774ef9b231462b0ac0505b2687a299fa1"
+    },
+    {
+        "id": 5,
+        "username": "şaban",
+        "password": "pbkdf2:sha256:260000$K31UnUKOqaTi8LtH$176b2fe02ab136be4fb02c60abab705ad1fc76d57cf5508f6ccee9a8aa46b9af"
+    },
+    {
+        "id": 6,
+        "username": "çağrı",
+        "password": "pbkdf2:sha256:260000$PAeUSkv9J0OBmGAo$5dfde1fefd76ef28e421667607f722cf5871fe1b33d9300c52c4e07257841fd0"
+    },
+    {
+        "id": 7,
+        "username": "serhat",
+        "password": "pbkdf2:sha256:260000$WZkHooXVLdjiD4Z9$2e86712ff5714762d8c9723710881371afb4f68ea262d62bb732e012f047e659"
+    },
+    {
+        "id": 8,
+        "username": "washer",
+        "password": "scrypt:32768:8:1$C5GLWARXiNc7wlv0$6c72a588b9884fe0131bca5223758137747aba9f87afe947822990f2136a0ccbf9e833dacafbbaf3536573766367fb3e3658d500dd8902e54ea3a9bb01ab2289"
+    },
+    {
+        "id": 9,
+        "username": "dogukan",
+        "password": "scrypt:32768:8:1$Csrlay8DwcyDPUx8$e9689294acd385b40d8666576908ebc8cdeef2a0a3a03547389229e9cd857027be6cf937d077060a0a7ca57c3990ddb8f5ecdea88144831453bd15d57bc8bb72"
+    },
+    {
+        "id": 10,
+        "username": "kaanyılmaz",
+        "password": "scrypt:32768:8:1$9WLkFJhpoFt3m0nB$bd4ef01a0b336bef29e32a47685b217bf4b1a962ca8200cdb6c5efe6d77a1198b6deda2894ba0861b4bf271c0a6fe622eee6c01f42a961a889abae280565f5ee"
+    }
+]

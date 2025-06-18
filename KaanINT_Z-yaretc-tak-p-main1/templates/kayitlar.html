@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Misafir Kayıtları - Otel Yönetim Sistemi</title>
+    <link rel="stylesheet" type="text/css" href="/static/kayıtlar.css">
+    <style>
+        /* Mesaj kutusu stilini ekle */
+        .message-box {
+            display: none; /* Varsayılan olarak gizli */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+        }
+        .message-box button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="geri-button-container">
+        <button class="geri-button" onclick="goBack()">Geri</button>
+    </div>
+
+    <script>
+        function goBack() {
+          // Rota adı düzeltildi: 'ana_kayıtlar' yerine 'ana_kayitlar'
+          window.location.href = '{{ url_for("ana_kayitlar") }}'; 
+        }
+
+        // Basit mesaj kutusu gösterme fonksiyonu
+        function showMessageBox(message, onConfirm) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            const confirmButton = document.getElementById('confirmButton');
+            const cancelButton = document.getElementById('cancelButton');
+
+            messageText.textContent = message;
+            messageBox.style.display = 'block';
+
+            confirmButton.onclick = null;
+            cancelButton.onclick = null;
+
+            confirmButton.onclick = () => {
+                messageBox.style.display = 'none';
+                if (onConfirm) onConfirm(true);
+            };
+
+            cancelButton.onclick = () => {
+                messageBox.style.display = 'none';
+                if (onConfirm) onConfirm(false);
+            };
+        }
+
+        function handleDelete(event, form) {
+            event.preventDefault(); 
+            showMessageBox('Bu kaydı silmek istediğinize emin misiniz?', (confirmed) => {
+                if (confirmed) {
+                    form.submit(); 
+                } else {
+                    console.log("Silme işlemi iptal edildi.");
+                }
+            });
+        }
+    </script>
+    <div class="kayit-listesi">
+        <h2>Otel Misafir Kayıtları</h2>
+        <table class="kayit-tablosu">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ad Soyad</th>
+                    <th>TC/Pasaport No</th>
+                    <th>Telefon</th>
+                    <th>E-posta</th>
+                    <th>Giriş Tarihi</th>
+                    <th>Çıkış Tarihi</th>
+                    <th>Oda No</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if ziyaretciler %}
+                    {% for misafir in ziyaretciler %}
+                    <tr>
+                        <td>{{ misafir.id }}</td>
+                        <td>{{ misafir.ad }} {{ misafir.soyad }}</td>
+                        <td>{{ misafir.tc_pasaport_no }}</td>
+                        <td>{{ misafir.telefon }}</td>
+                        <td>{{ misafir.email }}</td>
+                        <td>{{ misafir.giris_tarihi_saati }}</td>
+                        <td>{{ misafir.cikis_tarihi_saati }}</td>
+                        <td>{{ misafir.oda_no }}</td>
+                        <td class="duzenle-sil-alan">
+                            <a href="{{ url_for('duzenle_ziyaretci', misafir_id=misafir.id) }}">Düzenle</a>
+                            <form action="{{ url_for('sil_ziyaretci', misafir_id=misafir.id) }}" method="POST" style="display:inline;" onsubmit="handleDelete(event, this);">
+                                <button type="submit" class="sil">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9">Henüz hiç misafir kaydı bulunmamaktadır.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <p><em>Not: Bu liste veritabanındaki güncel verileri göstermektedir.</em></p>
+    </div>
+
+    <!-- Özel Mesaj Kutusu -->
+    <div id="messageBox" class="message-box">
+        <p id="messageText"></p>
+        <button id="confirmButton">Evet</button>
+        <button id="cancelButton">İptal</button>
+    </div>
+</body>
+</html>
